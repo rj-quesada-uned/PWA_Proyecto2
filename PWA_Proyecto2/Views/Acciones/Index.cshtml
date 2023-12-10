@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Vuelos";
+}
+
+<h2>Vuelos</h2>
+
+<h3>Despegues</h3>
+@Html.ActionLink("Crear Despegue", "CrearDespegue", "Acciones", null, new { @class = "btn btn-primary" })
+
+<table class="table">
+    <tr>
+        <th>Numero de Despegue</th>
+        <th>Nombre de la mision</th>
+        <th>Fecha y Hora</th>
+        <th>Tecnico Encargado</th>
+    </tr>
+    @foreach (var despegue in ViewBag.Despegues)
+    {
+        <tr>
+            <td>@despegue.NumeroDespegue</td>
+            <td>@despegue.FechaHoraDespegue</td>
+            <td>@despegue.AeropuertoOrigen</td>
+            <td>@despegue.AeropuertoDestino</td>
+            <td>@despegue.NumeroVuelo</td>
+        </tr>
+    }
+</table>
+

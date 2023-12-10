@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="43307b38b3ef4e4a858acab54d970b87" Name="Diagram1">
+        <EntityTypeShape EntityType="PAW_Proyecto2Model.Aterrizaje" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAW_Proyecto2Model.Aviones" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAW_Proyecto2Model.Despegue" Width="2.75" PointX="0.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAW_Proyecto2Model.MarcasAviones" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAW_Proyecto2Model.ModelosAviones" Width="1.5" PointX="3" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PAW_Proyecto2Model.RetiroAviones" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="PAW_Proyecto2Model.FK__Aterrizaj__Despe__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="PAW_Proyecto2Model.FK__ModelosAv__Nombr__4F7CD00D" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
