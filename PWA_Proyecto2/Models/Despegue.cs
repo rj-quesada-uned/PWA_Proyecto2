@@ -20,14 +20,13 @@ namespace PWA_Proyecto2.Models
             this.Aterrizaje = new HashSet<Aterrizaje>();
         }
     
-        public int Id { get; set; }
         public string NumeroDespegue { get; set; }
-        public DateTime FechaHoraInicia { get; set; }
+        public Nullable<System.DateTime> FechaHoraInicia { get; set; }
         public string TecnicoEncargado { get; set; }
         public string NombreMision { get; set; }
         public string NombrePiloto { get; set; }
-
-
+        public Nullable<int> AvionId { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Aterrizaje> Aterrizaje { get; set; }
     }

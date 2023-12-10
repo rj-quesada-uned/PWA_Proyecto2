@@ -11,7 +11,7 @@
                     modelosDropdown.empty();
                     modelosDropdown.append($('<option></option>').val('').text('Seleccione un modelo'));
                     $.each(data, function (index, item) {
-                        modelosDropdown.append($('<option></option>').val(item.Text).text(item.Text));
+                        modelosDropdown.append($('<option></option>').val(item.Value).text(item.Text));
                     });
                     $("#modeloField").show();
                 },

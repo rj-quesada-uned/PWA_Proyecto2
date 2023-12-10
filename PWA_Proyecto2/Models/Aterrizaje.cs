@@ -15,7 +15,7 @@ namespace PWA_Proyecto2.Models
     public partial class Aterrizaje
     {
         public int Id { get; set; }
-        public Nullable<int> DespegueId { get; set; }
+        public string DespegueId { get; set; }
         public Nullable<System.DateTime> FechaHoraRetorno { get; set; }
         public Nullable<bool> AvionPerdido { get; set; }
         public Nullable<bool> PerdidasHumanas { get; set; }

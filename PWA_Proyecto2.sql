@@ -69,6 +69,7 @@ CREATE TABLE Aviones (
     DistanciaMaximaCombustible FLOAT,
     FechaIngreso DATETIME,
     TecnicoIngreso VARCHAR(100),
+    PilotoEncargado VARCHAR(100),
     CantidadExistencia INT,
 	FOREIGN KEY (MarcaId) REFERENCES MarcasAviones(IdMarca),
     FOREIGN KEY (ModeloId) REFERENCES ModelosAviones(ModeloId)
@@ -84,27 +85,20 @@ CREATE TABLE RetiroAviones (
 );
 
 CREATE TABLE Despegue (
-    Id INT PRIMARY KEY IDENTITY(1,1),
-    NumeroDespegue VARCHAR(20) UNIQUE,
+    NumeroDespegue VARCHAR(20) PRIMARY KEY,
     FechaHoraInicia DATETIME,
     TecnicoEncargado VARCHAR(100),
-    NombreMision VARCHAR(100)
-);
-
-CREATE TABLE AvionDespegue (
-    AvionId INT,
-    DespegueId INT,
-    PilotoEncargado VARCHAR(100),
-    FOREIGN KEY (AvionId) REFERENCES Aviones(Id),
-    FOREIGN KEY (DespegueId) REFERENCES Despegue(Id)
+    NombreMision VARCHAR(100),
+    NombrePiloto VARCHAR(255),
+	AvionId int
 );
 
 CREATE TABLE Aterrizaje (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    DespegueId INT,
+    DespegueId VARCHAR(20),
     FechaHoraRetorno DATETIME,
     AvionPerdido BIT,
     PerdidasHumanas BIT,
     NecesitaRescate BIT,
-    FOREIGN KEY (DespegueId) REFERENCES Despegue(Id)
+    FOREIGN KEY (DespegueId) REFERENCES Despegue(NumeroDespegue)
 );

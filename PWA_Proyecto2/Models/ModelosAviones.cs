@@ -14,10 +14,18 @@ namespace PWA_Proyecto2.Models
     
     public partial class ModelosAviones
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ModelosAviones()
+        {
+            this.Aviones = new HashSet<Aviones>();
+        }
+    
         public int ModeloId { get; set; }
         public Nullable<int> MarcaId { get; set; }
         public string Nombre { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Aviones> Aviones { get; set; }
         public virtual MarcasAviones MarcasAviones { get; set; }
     }
 }

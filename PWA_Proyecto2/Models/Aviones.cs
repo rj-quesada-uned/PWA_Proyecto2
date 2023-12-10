@@ -14,7 +14,7 @@ namespace PWA_Proyecto2.Models
     
     public partial class Aviones
     {
-        public int Id { get; set; }
+        public int AvionId { get; set; }
         public Nullable<int> MarcaId { get; set; }
         public Nullable<int> ModeloId { get; set; }
         public string NumeroSerie { get; set; }
@@ -24,5 +24,8 @@ namespace PWA_Proyecto2.Models
         public Nullable<System.DateTime> FechaIngreso { get; set; }
         public string TecnicoIngreso { get; set; }
         public Nullable<int> CantidadExistencia { get; set; }
+    
+        public virtual MarcasAviones MarcasAviones { get; set; }
+        public virtual ModelosAviones ModelosAviones { get; set; }
     }
 }

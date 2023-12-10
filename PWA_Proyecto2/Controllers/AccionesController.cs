@@ -16,8 +16,8 @@ namespace PWA_Proyecto2.Controllers
         {
             using (DbModels context = new DbModels())
             {
-                var despegues = context.Aterrizaje.ToList();
-                var aterrizajes = context.Despegue.ToList();
+                var aterrizajes = context.Aterrizaje.ToList();
+                var despegues = context.Despegue.ToList();
                 ViewBag.Despegues = despegues;
                 ViewBag.Aterrizajes = aterrizajes;
 
@@ -57,15 +57,15 @@ namespace PWA_Proyecto2.Controllers
         {
             using (DbModels context = new DbModels())
             {
-                var ultimoElemento = context.Despegue
-                    .OrderByDescending(e => e.Id)
-                    .FirstOrDefault();
+                int consecutivo = context.Despegue.Count();
                 int year = DateTime.Now.Year;
-                int consecutivo = 1;
-
-                if (ultimoElemento != null)
+                if (consecutivo == 0 )
                 {
-                    consecutivo = ultimoElemento.Id+1;
+                    consecutivo = 1;
+                }
+                else
+                {
+                    consecutivo = consecutivo + 1;
                 }
 
                 string numeroDespegue = $"{year}-DE-{consecutivo:D6}";
@@ -77,20 +77,31 @@ namespace PWA_Proyecto2.Controllers
         // GET: Acciones/Create
         public ActionResult CrearAterrizaje()
         {
-            return View();
+            using (DbModels context = new DbModels())
+            {
+                var despegues = context.Despegue.ToList();
+                SelectList despeguesSelectList = new SelectList(despegues, "NumeroDespegue", "NumeroDespegue");
+
+                ViewBag.DespeguesSelectList = despeguesSelectList;
+
+                return View();
+            }
         }
 
         // POST: Acciones/Create
         [HttpPost]
-        public ActionResult CrearAterrizaje(FormCollection collection)
+        public ActionResult CrearAterrizaje(Aterrizaje aterrizaje)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                using (DbModels context = new DbModels())
+                {
+                    context.Aterrizaje.Add(aterrizaje);
+                    context.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }

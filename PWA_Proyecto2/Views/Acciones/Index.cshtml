@@ -13,16 +13,39 @@
         <th>Nombre de la mision</th>
         <th>Fecha y Hora</th>
         <th>Tecnico Encargado</th>
+        <th>Nombre del Piloto</th>
     </tr>
     @foreach (var despegue in ViewBag.Despegues)
     {
         <tr>
             <td>@despegue.NumeroDespegue</td>
-            <td>@despegue.FechaHoraDespegue</td>
-            <td>@despegue.AeropuertoOrigen</td>
-            <td>@despegue.AeropuertoDestino</td>
-            <td>@despegue.NumeroVuelo</td>
+            <td>@despegue.NombreMision</td>
+            <td>@despegue.FechaHoraInicia</td>
+            <td>@despegue.TecnicoEncargado</td>
+            <td>@despegue.NombrePiloto</td>
         </tr>
     }
 </table>
 
+<h3>Despegues</h3>
+@Html.ActionLink("Crear Aterrizaje", "CrearAterrizaje", "Acciones", null, new { @class = "btn btn-primary" })
+
+<table class="table">
+    <tr>
+        <th>DespegueId</th>
+        <th>FechaHoraRetorno</th>
+        <th>AvionPerdido</th>
+        <th>PerdidasHumanas</th>
+        <th>NecesitaRescate</th>
+    </tr>
+    @foreach (var aterrizaje in ViewBag.Aterrizajes)
+    {
+        <tr>
+            <td>@aterrizaje.DespegueId</td>
+            <td>@aterrizaje.FechaHoraRetorno</td>
+            <td>@aterrizaje.AvionPerdido</td>
+            <td>@aterrizaje.PerdidasHumanas</td>
+            <td>@aterrizaje.NecesitaRescate</td>
+        </tr>
+    }
+</table>

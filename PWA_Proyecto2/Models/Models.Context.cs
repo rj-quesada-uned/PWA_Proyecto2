@@ -22,11 +22,9 @@ namespace PWA_Proyecto2.Models
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Despegue>().Property(d => d.NombrePiloto).HasMaxLength(255);
-
             throw new UnintentionalCodeFirstException();
         }
-
+    
         public virtual DbSet<Aterrizaje> Aterrizaje { get; set; }
         public virtual DbSet<Aviones> Aviones { get; set; }
         public virtual DbSet<Despegue> Despegue { get; set; }

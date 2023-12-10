@@ -10,24 +10,17 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="DespegueId" Type="int" />
+          <Property Name="DespegueId" Type="varchar" MaxLength="20" />
           <Property Name="FechaHoraRetorno" Type="datetime" />
           <Property Name="AvionPerdido" Type="bit" />
           <Property Name="PerdidasHumanas" Type="bit" />
           <Property Name="NecesitaRescate" Type="bit" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6013: La tabla o vista 'PAW_Proyecto2.dbo.AvionDespegue' no tiene definida una clave principal y no es posible inferir ninguna clave principal válida. Esta tabla o vista se ha excluido. Para usar la entidad, necesitará revisar el esquema, agregar las claves correctas y quitar sus comentarios.
-        <EntityType Name="AvionDespegue">
-          <Property Name="AvionId" Type="int" />
-          <Property Name="DespegueId" Type="int" />
-          <Property Name="PilotoEncargado" Type="varchar" MaxLength="100" />
-        </EntityType>-->
         <EntityType Name="Aviones">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="AvionId" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AvionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MarcaId" Type="int" />
           <Property Name="ModeloId" Type="int" />
           <Property Name="NumeroSerie" Type="varchar" MaxLength="50" />
@@ -40,13 +33,14 @@ advertencia 6013: La tabla o vista 'PAW_Proyecto2.dbo.AvionDespegue' no tiene de
         </EntityType>
         <EntityType Name="Despegue">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="NumeroDespegue" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="NumeroDespegue" Type="varchar" MaxLength="20" />
+          <Property Name="NumeroDespegue" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="FechaHoraInicia" Type="datetime" />
           <Property Name="TecnicoEncargado" Type="varchar" MaxLength="100" />
           <Property Name="NombreMision" Type="varchar" MaxLength="100" />
+          <Property Name="NombrePiloto" Type="varchar" MaxLength="255" />
+          <Property Name="AvionId" Type="int" />
         </EntityType>
         <EntityType Name="MarcasAviones">
           <Key>
@@ -73,25 +67,43 @@ advertencia 6013: La tabla o vista 'PAW_Proyecto2.dbo.AvionDespegue' no tiene de
           <Property Name="FechaRetiro" Type="datetime" />
           <Property Name="MotivoRetiro" Type="varchar" MaxLength="255" />
         </EntityType>
-        <Association Name="FK__Aterrizaj__Despe__4AB81AF0">
+        <Association Name="FK__Aterrizaj__Despe__45F365D3">
           <End Role="Despegue" Type="Self.Despegue" Multiplicity="0..1" />
           <End Role="Aterrizaje" Type="Self.Aterrizaje" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Despegue">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="NumeroDespegue" />
             </Principal>
             <Dependent Role="Aterrizaje">
               <PropertyRef Name="DespegueId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errores durante la generación:
-error 6004: Una relación hace referencia a la tabla 'PAW_Proyecto2.dbo.AvionDespegue', pero no se encuentra la tabla.
-        <Association Name="FK__AvionDesp__Avion__46E78A0C" />-->
-        <!--Errores durante la generación:
-error 6004: Una relación hace referencia a la tabla 'PAW_Proyecto2.dbo.AvionDespegue', pero no se encuentra la tabla.
-        <Association Name="FK__AvionDesp__Despe__47DBAE45" />-->
-        <Association Name="FK__ModelosAv__Nombr__4F7CD00D">
+        <Association Name="FK__Aviones__MarcaId__3D5E1FD2">
+          <End Role="MarcasAviones" Type="Self.MarcasAviones" Multiplicity="0..1" />
+          <End Role="Aviones" Type="Self.Aviones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MarcasAviones">
+              <PropertyRef Name="IdMarca" />
+            </Principal>
+            <Dependent Role="Aviones">
+              <PropertyRef Name="MarcaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Aviones__ModeloI__3E52440B">
+          <End Role="ModelosAviones" Type="Self.ModelosAviones" Multiplicity="0..1" />
+          <End Role="Aviones" Type="Self.Aviones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ModelosAviones">
+              <PropertyRef Name="ModeloId" />
+            </Principal>
+            <Dependent Role="Aviones">
+              <PropertyRef Name="ModeloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModelosAv__Nombr__398D8EEE">
           <End Role="MarcasAviones" Type="Self.MarcasAviones" Multiplicity="0..1" />
           <End Role="ModelosAviones" Type="Self.ModelosAviones" Multiplicity="*" />
           <ReferentialConstraint>
@@ -104,8 +116,8 @@ error 6004: Una relación hace referencia a la tabla 'PAW_Proyecto2.dbo.AvionDes
           </ReferentialConstraint>
         </Association>
         <!--Errores durante la generación:
-advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas que no forman parte de la clave de la tabla en el lado principal de la relación. Se excluyó la relación.
-        <Association Name="FK__RetiroAvi__Numer__4222D4EF" />-->
+advertencia 6035: La relación 'FK__RetiroAvi__Numer__412EB0B6' tiene columnas que no forman parte de la clave de la tabla en el lado principal de la relación. Se excluyó la relación.
+        <Association Name="FK__RetiroAvi__Numer__412EB0B6" />-->
         <EntityContainer Name="PAW_Proyecto2ModelStoreContainer">
           <EntitySet Name="Aterrizaje" EntityType="Self.Aterrizaje" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Aviones" EntityType="Self.Aviones" Schema="dbo" store:Type="Tables" />
@@ -113,11 +125,19 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <EntitySet Name="MarcasAviones" EntityType="Self.MarcasAviones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModelosAviones" EntityType="Self.ModelosAviones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RetiroAviones" EntityType="Self.RetiroAviones" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Aterrizaj__Despe__4AB81AF0" Association="Self.FK__Aterrizaj__Despe__4AB81AF0">
+          <AssociationSet Name="FK__Aterrizaj__Despe__45F365D3" Association="Self.FK__Aterrizaj__Despe__45F365D3">
             <End Role="Despegue" EntitySet="Despegue" />
             <End Role="Aterrizaje" EntitySet="Aterrizaje" />
           </AssociationSet>
-          <AssociationSet Name="FK__ModelosAv__Nombr__4F7CD00D" Association="Self.FK__ModelosAv__Nombr__4F7CD00D">
+          <AssociationSet Name="FK__Aviones__MarcaId__3D5E1FD2" Association="Self.FK__Aviones__MarcaId__3D5E1FD2">
+            <End Role="MarcasAviones" EntitySet="MarcasAviones" />
+            <End Role="Aviones" EntitySet="Aviones" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Aviones__ModeloI__3E52440B" Association="Self.FK__Aviones__ModeloI__3E52440B">
+            <End Role="ModelosAviones" EntitySet="ModelosAviones" />
+            <End Role="Aviones" EntitySet="Aviones" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModelosAv__Nombr__398D8EEE" Association="Self.FK__ModelosAv__Nombr__398D8EEE">
             <End Role="MarcasAviones" EntitySet="MarcasAviones" />
             <End Role="ModelosAviones" EntitySet="ModelosAviones" />
           </AssociationSet>
@@ -132,18 +152,18 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DespegueId" Type="Int32" />
+          <Property Name="DespegueId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="FechaHoraRetorno" Type="DateTime" Precision="3" />
           <Property Name="AvionPerdido" Type="Boolean" />
           <Property Name="PerdidasHumanas" Type="Boolean" />
           <Property Name="NecesitaRescate" Type="Boolean" />
-          <NavigationProperty Name="Despegue" Relationship="Self.FK__Aterrizaj__Despe__4AB81AF0" FromRole="Aterrizaje" ToRole="Despegue" />
+          <NavigationProperty Name="Despegue" Relationship="Self.FK__Aterrizaj__Despe__45F365D3" FromRole="Aterrizaje" ToRole="Despegue" />
         </EntityType>
         <EntityType Name="Aviones">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="AvionId" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AvionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MarcaId" Type="Int32" />
           <Property Name="ModeloId" Type="Int32" />
           <Property Name="NumeroSerie" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -153,17 +173,20 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <Property Name="FechaIngreso" Type="DateTime" Precision="3" />
           <Property Name="TecnicoIngreso" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CantidadExistencia" Type="Int32" />
+          <NavigationProperty Name="MarcasAviones" Relationship="Self.FK__Aviones__MarcaId__3D5E1FD2" FromRole="Aviones" ToRole="MarcasAviones" />
+          <NavigationProperty Name="ModelosAviones" Relationship="Self.FK__Aviones__ModeloI__3E52440B" FromRole="Aviones" ToRole="ModelosAviones" />
         </EntityType>
         <EntityType Name="Despegue">
           <Key>
-            <PropertyRef Name="Id" />
+            <PropertyRef Name="NumeroDespegue" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="NumeroDespegue" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NumeroDespegue" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="FechaHoraInicia" Type="DateTime" Precision="3" />
           <Property Name="TecnicoEncargado" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="NombreMision" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Aterrizaje" Relationship="Self.FK__Aterrizaj__Despe__4AB81AF0" FromRole="Despegue" ToRole="Aterrizaje" />
+          <Property Name="NombrePiloto" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="AvionId" Type="Int32" />
+          <NavigationProperty Name="Aterrizaje" Relationship="Self.FK__Aterrizaj__Despe__45F365D3" FromRole="Despegue" ToRole="Aterrizaje" />
         </EntityType>
         <EntityType Name="MarcasAviones">
           <Key>
@@ -171,7 +194,8 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           </Key>
           <Property Name="IdMarca" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="ModelosAviones" Relationship="Self.FK__ModelosAv__Nombr__4F7CD00D" FromRole="MarcasAviones" ToRole="ModelosAviones" />
+          <NavigationProperty Name="Aviones" Relationship="Self.FK__Aviones__MarcaId__3D5E1FD2" FromRole="MarcasAviones" ToRole="Aviones" />
+          <NavigationProperty Name="ModelosAviones" Relationship="Self.FK__ModelosAv__Nombr__398D8EEE" FromRole="MarcasAviones" ToRole="ModelosAviones" />
         </EntityType>
         <EntityType Name="ModelosAviones">
           <Key>
@@ -180,7 +204,8 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <Property Name="ModeloId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MarcaId" Type="Int32" />
           <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="MarcasAviones" Relationship="Self.FK__ModelosAv__Nombr__4F7CD00D" FromRole="ModelosAviones" ToRole="MarcasAviones" />
+          <NavigationProperty Name="Aviones" Relationship="Self.FK__Aviones__ModeloI__3E52440B" FromRole="ModelosAviones" ToRole="Aviones" />
+          <NavigationProperty Name="MarcasAviones" Relationship="Self.FK__ModelosAv__Nombr__398D8EEE" FromRole="ModelosAviones" ToRole="MarcasAviones" />
         </EntityType>
         <EntityType Name="RetiroAviones">
           <Key>
@@ -192,19 +217,43 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <Property Name="FechaRetiro" Type="DateTime" Precision="3" />
           <Property Name="MotivoRetiro" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
         </EntityType>
-        <Association Name="FK__Aterrizaj__Despe__4AB81AF0">
+        <Association Name="FK__Aterrizaj__Despe__45F365D3">
           <End Role="Despegue" Type="Self.Despegue" Multiplicity="0..1" />
           <End Role="Aterrizaje" Type="Self.Aterrizaje" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Despegue">
-              <PropertyRef Name="Id" />
+              <PropertyRef Name="NumeroDespegue" />
             </Principal>
             <Dependent Role="Aterrizaje">
               <PropertyRef Name="DespegueId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__ModelosAv__Nombr__4F7CD00D">
+        <Association Name="FK__Aviones__MarcaId__3D5E1FD2">
+          <End Role="MarcasAviones" Type="Self.MarcasAviones" Multiplicity="0..1" />
+          <End Role="Aviones" Type="Self.Aviones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MarcasAviones">
+              <PropertyRef Name="IdMarca" />
+            </Principal>
+            <Dependent Role="Aviones">
+              <PropertyRef Name="MarcaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Aviones__ModeloI__3E52440B">
+          <End Role="ModelosAviones" Type="Self.ModelosAviones" Multiplicity="0..1" />
+          <End Role="Aviones" Type="Self.Aviones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ModelosAviones">
+              <PropertyRef Name="ModeloId" />
+            </Principal>
+            <Dependent Role="Aviones">
+              <PropertyRef Name="ModeloId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ModelosAv__Nombr__398D8EEE">
           <End Role="MarcasAviones" Type="Self.MarcasAviones" Multiplicity="0..1" />
           <End Role="ModelosAviones" Type="Self.ModelosAviones" Multiplicity="*" />
           <ReferentialConstraint>
@@ -223,11 +272,19 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <EntitySet Name="MarcasAviones" EntityType="Self.MarcasAviones" />
           <EntitySet Name="ModelosAviones" EntityType="Self.ModelosAviones" />
           <EntitySet Name="RetiroAviones" EntityType="Self.RetiroAviones" />
-          <AssociationSet Name="FK__Aterrizaj__Despe__4AB81AF0" Association="Self.FK__Aterrizaj__Despe__4AB81AF0">
+          <AssociationSet Name="FK__Aterrizaj__Despe__45F365D3" Association="Self.FK__Aterrizaj__Despe__45F365D3">
             <End Role="Despegue" EntitySet="Despegue" />
             <End Role="Aterrizaje" EntitySet="Aterrizaje" />
           </AssociationSet>
-          <AssociationSet Name="FK__ModelosAv__Nombr__4F7CD00D" Association="Self.FK__ModelosAv__Nombr__4F7CD00D">
+          <AssociationSet Name="FK__Aviones__MarcaId__3D5E1FD2" Association="Self.FK__Aviones__MarcaId__3D5E1FD2">
+            <End Role="MarcasAviones" EntitySet="MarcasAviones" />
+            <End Role="Aviones" EntitySet="Aviones" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Aviones__ModeloI__3E52440B" Association="Self.FK__Aviones__ModeloI__3E52440B">
+            <End Role="ModelosAviones" EntitySet="ModelosAviones" />
+            <End Role="Aviones" EntitySet="Aviones" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ModelosAv__Nombr__398D8EEE" Association="Self.FK__ModelosAv__Nombr__398D8EEE">
             <End Role="MarcasAviones" EntitySet="MarcasAviones" />
             <End Role="ModelosAviones" EntitySet="ModelosAviones" />
           </AssociationSet>
@@ -253,7 +310,7 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <EntitySetMapping Name="Aviones">
             <EntityTypeMapping TypeName="PAW_Proyecto2Model.Aviones">
               <MappingFragment StoreEntitySet="Aviones">
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AvionId" ColumnName="AvionId" />
                 <ScalarProperty Name="MarcaId" ColumnName="MarcaId" />
                 <ScalarProperty Name="ModeloId" ColumnName="ModeloId" />
                 <ScalarProperty Name="NumeroSerie" ColumnName="NumeroSerie" />
@@ -269,11 +326,12 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__4222D4EF' tiene columnas q
           <EntitySetMapping Name="Despegue">
             <EntityTypeMapping TypeName="PAW_Proyecto2Model.Despegue">
               <MappingFragment StoreEntitySet="Despegue">
-                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NumeroDespegue" ColumnName="NumeroDespegue" />
                 <ScalarProperty Name="FechaHoraInicia" ColumnName="FechaHoraInicia" />
                 <ScalarProperty Name="TecnicoEncargado" ColumnName="TecnicoEncargado" />
                 <ScalarProperty Name="NombreMision" ColumnName="NombreMision" />
+                <ScalarProperty Name="NombrePiloto" ColumnName="NombrePiloto" />
+                <ScalarProperty Name="AvionId" ColumnName="AvionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
