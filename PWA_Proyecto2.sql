@@ -71,6 +71,7 @@ CREATE TABLE Aviones (
     TecnicoIngreso VARCHAR(100),
     PilotoEncargado VARCHAR(100),
     CantidadExistencia INT,
+    Retirado BIT,
 	FOREIGN KEY (MarcaId) REFERENCES MarcasAviones(IdMarca),
     FOREIGN KEY (ModeloId) REFERENCES ModelosAviones(ModeloId)
 );

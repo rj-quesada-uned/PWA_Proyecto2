@@ -14,7 +14,10 @@ namespace PWA_Proyecto2.Controllers
         {
             using (DbModels context = new DbModels())
             {
-                return View(context.Aviones.ToList());
+                var retiros = context.RetiroAviones.ToList();
+                ViewBag.Retiros = retiros;
+
+                return View(context.Aviones.Where(a => !a.Retirado.HasValue || (a.Retirado.HasValue && !a.Retirado.Value)).ToList());
             }
         }
 
@@ -53,7 +56,58 @@ namespace PWA_Proyecto2.Controllers
                 {
                     context.Aviones.Add(aviones);
                     aviones.FechaIngreso = DateTime.Now;
+                    aviones.Retirado = false;
                     context.SaveChanges();
+                }
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // POST: Aviones/Retiro
+        public ActionResult Retiro()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult GetListaAviones()
+        {
+            using (DbModels context = new DbModels())
+            {
+                var listaAviones = context.Aviones
+                    .Where(a => !a.Retirado.HasValue || (a.Retirado.HasValue && !a.Retirado.Value))
+                    .Select(a => new
+                    {
+                        a.NumeroSerie,
+                    })
+                .ToList();
+
+                return Json(listaAviones, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Retiro(RetiroAviones retiroAviones)
+        {
+            try
+            {
+                using (DbModels context = new DbModels())
+                {
+                    var avionEncontrado = context.Aviones.FirstOrDefault(avion => avion.NumeroSerie == retiroAviones.NumeroSerie);
+                    if (avionEncontrado != null && !avionEncontrado.Retirado.HasValue)
+                    {
+                        avionEncontrado.Retirado = true;
+
+                        context.SaveChanges();
+
+                        retiroAviones.FechaRetiro = DateTime.Now;
+                        context.RetiroAviones.Add(retiroAviones);
+                        context.SaveChanges();
+                    }
                 }
                 return RedirectToAction("Index");
             }

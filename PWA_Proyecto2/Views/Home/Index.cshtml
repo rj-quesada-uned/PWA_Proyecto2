@@ -2,30 +2,49 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ingreso</h5>
+                    <img src="https://www.telam.com.ar/thumbs/bluesteel/advf/imagenes/2020/02/5e42d4e114d35_450.jpg" alt="New Airplane" width="50%">
+                </div>
+                <a href="@Url.Action("Create", "Aviones")" class="btn btn-primary">Ir a Ingreso</a>
+            </div>
+        </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Retiro</h5>
+                    <img src="https://cnnespanol.cnn.com/wp-content/uploads/2018/04/cnn-aviones-6.jpg?quality=100&strip=info" alt="New Airplane" width="50%">
+                </div>
+                <a href="@Url.Action("Retiro", "Aviones")" class="btn btn-primary">Ir a Retiro</a>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Inventario de Aviones</h5>
+                    <img src="https://img.freepik.com/fotos-premium/hangar-lleno-aviones-listos-despegar-creado-inteligencia-artificial-generativa_124507-88674.jpg?w=2000" alt="New Airplane" width="50%">
+                </div>
+                <a href="@Url.Action("Index", "Aviones")" class="btn btn-primary">Ir a Inventario</a>
+
+            </div>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Despegues y Aterrizajes</h5>
+                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/EC62/production/_111141506_gettyimages-866616238.jpg" alt="New Airplane" width="50%">
+                </div>
+                <a href="@Url.Action("Index", "Acciones")" class="btn btn-primary">Ir a Despegues/Aterrizajes</a>
+            </div>
+        </div>
     </div>
 </div>

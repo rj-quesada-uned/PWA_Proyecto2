@@ -30,6 +30,7 @@
           <Property Name="FechaIngreso" Type="datetime" />
           <Property Name="TecnicoIngreso" Type="varchar" MaxLength="100" />
           <Property Name="CantidadExistencia" Type="int" />
+          <Property Name="Retirado" Type="bit" />
         </EntityType>
         <EntityType Name="Despegue">
           <Key>
@@ -173,6 +174,7 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__412EB0B6' tiene columnas q
           <Property Name="FechaIngreso" Type="DateTime" Precision="3" />
           <Property Name="TecnicoIngreso" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="CantidadExistencia" Type="Int32" />
+          <Property Name="Retirado" Type="Boolean" />
           <NavigationProperty Name="MarcasAviones" Relationship="Self.FK__Aviones__MarcaId__3D5E1FD2" FromRole="Aviones" ToRole="MarcasAviones" />
           <NavigationProperty Name="ModelosAviones" Relationship="Self.FK__Aviones__ModeloI__3E52440B" FromRole="Aviones" ToRole="ModelosAviones" />
         </EntityType>
@@ -320,6 +322,7 @@ advertencia 6035: La relación 'FK__RetiroAvi__Numer__412EB0B6' tiene columnas q
                 <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
                 <ScalarProperty Name="TecnicoIngreso" ColumnName="TecnicoIngreso" />
                 <ScalarProperty Name="CantidadExistencia" ColumnName="CantidadExistencia" />
+                <ScalarProperty Name="Retirado" ColumnName="Retirado" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

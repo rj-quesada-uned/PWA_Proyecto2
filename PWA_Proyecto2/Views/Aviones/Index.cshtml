@@ -7,42 +7,44 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<a href="@Url.Action("Create", "Aviones")" class="btn btn-primary">Ingresar Aviones</a>
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.MarcaId)
+            Marca
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ModeloId)
+            Modelo
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NumeroSerie)
+            Numero de Serie
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.NombreFantasia)
+            Nombre de Fantasia
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Dimensiones)
+            Dimensiones
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DistanciaMaximaCombustible)
+            Distancia maxima
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaIngreso)
+            Fecha de ingreso
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TecnicoIngreso)
+            Tecnico
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CantidadExistencia)
+            Retirado
         </th>
-        <th></th>
+        <th>
+            Existencia
+        </th>
     </tr>
 
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.MarcaId)
@@ -69,9 +71,38 @@
             @Html.DisplayFor(modelItem => item.TecnicoIngreso)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.Retirado)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.CantidadExistencia)
         </td>
     </tr>
-}
+    }
 
+</table>
+
+
+
+<h3>Retiros</h3>
+
+<a href="@Url.Action("Retiro", "Aviones")" class="btn btn-primary">Retirar Aviones</a>
+
+<table class="table">
+    <tr>
+        <th>RetiroId</th>
+        <th>NumeroSerie</th>
+        <th>TecnicoRetiro</th>
+        <th>FechaRetiro</th>
+        <th>MotivoRetiro</th>
+    </tr>
+    @foreach (var retiro in ViewBag.Retiros)
+    {
+        <tr>
+            <td>@retiro.RetiroId</td>
+            <td>@retiro.NumeroSerie</td>
+            <td>@retiro.TecnicoRetiro</td>
+            <td>@retiro.FechaRetiro</td>
+            <td>@retiro.MotivoRetiro</td>
+        </tr>
+    }
 </table>
