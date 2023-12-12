@@ -9,11 +9,14 @@ namespace PWA_Proyecto2.Controllers
 {
     public class AvionesController : Controller
     {
+        private const string AvionesKey = "Aviones";
+
         // GET: Aviones
         public ActionResult Index()
         {
             using (DbModels context = new DbModels())
             {
+
                 var retiros = context.RetiroAviones.ToList();
                 ViewBag.Retiros = retiros;
 
@@ -26,8 +29,10 @@ namespace PWA_Proyecto2.Controllers
         {
             using (DbModels context = new DbModels())
             {
+                List<Aviones> aviones = ObtenerAviones();
                 List<MarcasAviones> marcasList = context.MarcasAviones.ToList();
-                ViewBag.ListaMarcas = new SelectList(marcasList, "IdMarca", "Nombre");
+                ViewBag.Aviones = aviones;
+                ViewData["MarcaId"] = new SelectList(marcasList, "IdMarca", "Nombre");
                 return View();
             }
         }
@@ -54,11 +59,27 @@ namespace PWA_Proyecto2.Controllers
             {
                 using (DbModels context = new DbModels())
                 {
+                    if (Session[AvionesKey] != null)
+                    {
+                        var avionesEnSesion = (List<Aviones>)Session[AvionesKey];
+
+                        foreach (var avionEnSesion in avionesEnSesion)
+                        {
+                            context.Aviones.Add(avionEnSesion);
+                            avionEnSesion.FechaIngreso = DateTime.Now;
+                            avionEnSesion.Retirado = false;
+                        }
+
+                        Session.Remove(AvionesKey);
+                    }
+
                     context.Aviones.Add(aviones);
                     aviones.FechaIngreso = DateTime.Now;
                     aviones.Retirado = false;
+
                     context.SaveChanges();
                 }
+
                 return RedirectToAction("Index");
             }
             catch
@@ -66,6 +87,32 @@ namespace PWA_Proyecto2.Controllers
                 return View();
             }
         }
+
+        private List<Aviones> ObtenerAviones()
+        {
+            List<Aviones> aviones = Session[AvionesKey] as List<Aviones>;
+
+            if (aviones == null)
+            {
+                aviones = new List<Aviones>();
+            }
+
+            return aviones;
+        }
+
+        [HttpPost]
+        public ActionResult CreateState(Aviones aviones)
+        {
+            List<Aviones> avion = ObtenerAviones();
+            if (avion == null)
+            {
+                avion = new List<Aviones>();
+            }
+            avion.Add(aviones);
+            Session[AvionesKey] = avion;
+            return RedirectToAction("Create");
+        }
+
 
         // POST: Aviones/Retiro
         public ActionResult Retiro()

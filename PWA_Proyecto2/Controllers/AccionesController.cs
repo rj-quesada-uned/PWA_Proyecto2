@@ -8,9 +8,10 @@ using System.Web.Mvc;
 
 namespace PWA_Proyecto2.Controllers
 {
-
     public class AccionesController : Controller
     {
+        private const string DespeguesKey = "Despegues";
+
         // GET: Acciones
         public ActionResult Index()
         {
@@ -29,6 +30,9 @@ namespace PWA_Proyecto2.Controllers
         // GET: Acciones/Create
         public ActionResult CrearDespegue()
         {
+            List<Despegue> despegues = ObtenerDespegues();
+            ViewBag.Despegues = despegues;
+
             return View();
         }
 
@@ -36,29 +40,81 @@ namespace PWA_Proyecto2.Controllers
         [HttpPost]
         public ActionResult CrearDespegue(Despegue despegue)
         {
+            int consecutivo = GenerarNumeroDespegue();
+            int year = DateTime.Now.Year;
+            string numeroDespegue = $"{year}-DE-{consecutivo:D6}";
+
             try
             {
                 using (DbModels context = new DbModels())
                 {
+                    if (Session[DespeguesKey] != null)
+                    {
+                        var despeguesEnSesion = (List<Despegue>)Session[DespeguesKey];
+
+                        foreach (var despegueEnSesion in despeguesEnSesion)
+                        {
+                            context.Despegue.Add(despegueEnSesion);
+                        }
+
+                        Session.Remove(DespeguesKey);
+                    }
+
+                    despegue.NumeroDespegue = numeroDespegue;
                     context.Despegue.Add(despegue);
-                    despegue.NumeroDespegue = GenerarNumeroDespegue();
                     context.SaveChanges();
                 }
+
                 return RedirectToAction("Index");
             }
-            catch (Exception ex)
+            catch
             {
-                ModelState.AddModelError(string.Empty, $"Error al guardar: {ex.Message}");
-
                 return View(despegue);
             }
         }
-        private string GenerarNumeroDespegue()
+        private List<Despegue> ObtenerDespegues()
+        {
+            List<Despegue> despegue = Session[DespeguesKey] as List<Despegue>;
+
+            if (despegue == null)
+            {
+                despegue = new List<Despegue>();
+            }
+
+            return despegue;
+        }
+
+        [HttpPost]
+        public ActionResult CreateState(Despegue despegues)
+        {
+            List<Despegue> despegue = ObtenerDespegues();
+            int consecutivo = GenerarNumeroDespegue();
+            int year = DateTime.Now.Year;
+            string numeroDespegue = "";
+            if (despegue == null)
+            {
+                despegue = new List<Despegue>();
+                numeroDespegue = $"{year}-DE-{consecutivo:D6}";
+            }
+            else
+            {
+                int sumaConsecutivo = consecutivo + despegue.Count();
+                numeroDespegue = $"{year}-DE-{sumaConsecutivo:D6}";
+            }
+
+            despegues.NumeroDespegue = numeroDespegue;
+
+            despegue.Add(despegues);
+
+            Session[DespeguesKey] = despegue;
+            return RedirectToAction("CrearDespegue");
+        }
+
+        private int GenerarNumeroDespegue()
         {
             using (DbModels context = new DbModels())
             {
                 int consecutivo = context.Despegue.Count();
-                int year = DateTime.Now.Year;
                 if (consecutivo == 0 )
                 {
                     consecutivo = 1;
@@ -68,9 +124,7 @@ namespace PWA_Proyecto2.Controllers
                     consecutivo = consecutivo + 1;
                 }
 
-                string numeroDespegue = $"{year}-DE-{consecutivo:D6}";
-
-                return numeroDespegue;
+                return consecutivo;
             }
         }
 

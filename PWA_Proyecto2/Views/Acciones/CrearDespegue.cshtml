@@ -5,54 +5,76 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2>Tabla de Despegues</h2>
+<table class="table">
+    <tr>
+        <th>Numero de Despegue</th>
+        <th>Nombre de la mision</th>
+        <th>Fecha y Hora</th>
+        <th>Tecnico Encargado</th>
+        <th>Nombre del Piloto</th>
+    </tr>
+    @foreach (var despegue in ViewBag.Despegues)
+    {
+        <tr>
+            <td>@despegue.NumeroDespegue</td>
+            <td>@despegue.NombreMision</td>
+            <td>@despegue.FechaHoraInicia</td>
+            <td>@despegue.TecnicoEncargado</td>
+            <td>@despegue.NombrePiloto</td>
+        </tr>
+    }
+</table>
+
 <h2>CrearDespegue</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-<div class="form-horizontal">
-    <h4>Despegue</h4>
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <hr />
-    <div class="form-group">
-        <label for="FechaHoraInicia" class="control-label col-md-2">Fecha y Hora de Inicio:</label>
-        <div class="col-md-10">
-            <input type="datetime-local" id="FechaHoraInicia" name="FechaHoraInicia" class="form-control" />
+    <div class="form-horizontal">
+        <h4>Despegue</h4>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <hr />
+        <div class="form-group">
+            <label for="FechaHoraInicia" class="control-label col-md-2">Fecha y Hora de Inicio:</label>
+            <div class="col-md-10">
+                <input type="datetime-local" id="FechaHoraInicia" name="FechaHoraInicia" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NombrePiloto, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NombrePiloto, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NombrePiloto, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TecnicoEncargado, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TecnicoEncargado, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TecnicoEncargado, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NombreMision, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NombreMision, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NombreMision, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" name="boton" value="Agregar Despegue" formaction="@Url.Action("CreateState")" />
+                <input type="submit" name="boton" value="Guardar" formaction="@Url.Action("CrearDespegue")" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.NombrePiloto, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.NombrePiloto, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.NombrePiloto, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.TecnicoEncargado, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.TecnicoEncargado, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.TecnicoEncargado, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.NombreMision, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.NombreMision, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.NombreMision, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
